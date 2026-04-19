@@ -26,3 +26,4 @@ Aplikasi pembaca berita sederhana yang dibangun menggunakan bahasa Kotlin dengan
    git clone -b week-6 [(https://github.com/DaffaDesuandi2/ComposeMultiplatform.git)](https://github.com/DaffaDesuandi2/ComposeMultiplatform.git)
 
 ## Video Aplikasi
+![video berita](Assets/2026-04-1922-30-00.mkv)
