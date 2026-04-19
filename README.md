@@ -24,4 +24,6 @@ Aplikasi pembaca berita sederhana yang dibangun menggunakan bahasa Kotlin dengan
 ## 🚀 Cara Menjalankan
 1. Clone repository ini:
    ```bash
-   git clone -b week-6 [https://github.com/USERNAME_KAMU/NewsApp.git](https://github.com/USERNAME_KAMU/NewsApp.git)
+   git clone -b week-6 [(https://github.com/DaffaDesuandi2/ComposeMultiplatform.git)](https://github.com/DaffaDesuandi2/ComposeMultiplatform.git)
+
+## Video Aplikasi
