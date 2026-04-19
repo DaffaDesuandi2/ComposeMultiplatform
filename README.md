@@ -18,7 +18,7 @@ Aplikasi pembaca berita sederhana yang dibangun menggunakan bahasa Kotlin dengan
 * **Coil**: Library image loading yang ringan.
 
 ## 📸 Tampilan Aplikasi
-![Screenshot List Berita](https://via.placeholder.com/300x600?text=Screenshot+News+App)
+![Screenshot List Berita](Assets/Screenshot 2026-04-19 221928.png)
 
 ## 🚀 Cara Menjalankan
 1. Clone repository ini:
