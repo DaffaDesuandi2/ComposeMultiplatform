@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+    id("app.cash.sqldelight")
 }
 
 android {
@@ -38,6 +39,13 @@ android {
         compose = true
     }
 }
+sqldelight {
+    databases {
+        create("NoteDatabase") {
+            packageName.set("com.noteapp")
+        }
+    }
+}
 
 dependencies {
     implementation(libs.androidx.core.ktx)
@@ -50,6 +58,7 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     implementation("androidx.navigation:navigation-compose:2.9.8")
     testImplementation(libs.junit)
+    implementation("app.cash.sqldelight:android-driver:2.0.1")
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))

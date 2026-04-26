@@ -12,17 +12,24 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
+import app.cash.sqldelight.driver.android.AndroidSqliteDriver
 import com.noteapp.navigation.AppNavGraph
 import com.noteapp.navigation.MyBottomNavigation
 import com.noteapp.navigation.Routes
-import com.noteapp.ui.screen.NotesScreen
+import com.noteapp.ui.NoteViewModel
 
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val driver = AndroidSqliteDriver(NoteDatabase.Schema, applicationContext, "note.db")
+        val database = NoteDatabase(driver)
+        val queries = database.noteEntityQueries
+        val viewModel = NoteViewModel(queries)
+
         setContent {
             val navController = rememberNavController()
+
             Scaffold(
                 bottomBar = {
                     MyBottomNavigation(navController)
@@ -35,12 +42,15 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             ) { innerPadding ->
-                Box(modifier = Modifier.padding(innerPadding)){
-                    AppNavGraph(navController = navController)
+                // 4. Masukkan NavGraph ke dalam Box/Padding Scaffold
+                Box(modifier = Modifier.padding(innerPadding)) {
+                    // Panggil AppNavGraph SEKALI SAJA dan oper viewModel-nya
+                    AppNavGraph(
+                        navController = navController,
+                        viewModel = viewModel
+                    )
                 }
-
             }
         }
     }
 }
-
