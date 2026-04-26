@@ -26,52 +26,81 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.noteapp.ui.NoteViewModel
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.foundation.background
+import org.koin.compose.koinInject
+import com.noteapp.NetworkMonitor
 
 
 @Composable
 fun NotesScreen(navController: NavHostController, viewModel: NoteViewModel) {
     val notes by viewModel.notes.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        if (isLoading) {
-            CircularProgressIndicator()
-        } else if (notes.isEmpty()) {
-            Text(text = "Belum ada catatan nih.")
-        } else {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                items(notes) { note ->
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable {
-                                navController.navigate("editnote/${note.id}")
-                            },
-                        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-                    ) {
-                        Column(modifier = Modifier.padding(16.dp)) {
-                            Text(
-                                text = note.title,
-                                style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.Bold
-                            )
-                            Text(
-                                text = note.content,
-                                maxLines = 2, // Biar gak kepanjangan di list
-                                overflow = TextOverflow.Ellipsis,
-                                style = MaterialTheme.typography.bodySmall
-                            )
+    val networkMonitor: NetworkMonitor = koinInject()
+    val isOnline by networkMonitor.isConnected.collectAsState(initial = true)
+    Column(modifier = Modifier.fillMaxSize()) {
 
-                            Text(
-                                text = java.text.SimpleDateFormat("dd/MM/yyyy", java.util.Locale.getDefault())
-                                    .format(java.util.Date(note.createdAt)),
-                                style = MaterialTheme.typography.labelSmall,
-                                color = Color.Gray,
-                                modifier = Modifier.align(Alignment.End)
-                            )
+        // 2. Tampilkan banner internet (hanya muncul kalau OFFLINE)
+        if (!isOnline) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.Red)
+                    .padding(8.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "Tidak ada koneksi internet",
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
+        }
+
+        // 3. Bagian Konten (Loading, Empty, atau List)
+        Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.Center) {
+            if (isLoading) {
+                CircularProgressIndicator()
+            } else if (notes.isEmpty()) {
+                Text(text = "Belum ada catatan nih.")
+            } else {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(notes) { note ->
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    navController.navigate("editnote/${note.id}")
+                                },
+                            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                        ) {
+                            Column(modifier = Modifier.padding(16.dp)) {
+                                Text(
+                                    text = note.title,
+                                    style = MaterialTheme.typography.titleMedium,
+                                    fontWeight = FontWeight.Bold
+                                )
+                                Text(
+                                    text = note.content,
+                                    maxLines = 2,
+                                    overflow = TextOverflow.Ellipsis,
+                                    style = MaterialTheme.typography.bodySmall
+                                )
+
+                                Text(
+                                    text = java.text.SimpleDateFormat("dd/MM/yyyy", java.util.Locale.getDefault())
+                                        .format(java.util.Date(note.createdAt)),
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = Color.Gray,
+                                    modifier = Modifier.align(Alignment.End)
+                                )
+                            }
                         }
                     }
                 }

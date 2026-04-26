@@ -17,16 +17,15 @@ import com.noteapp.navigation.AppNavGraph
 import com.noteapp.navigation.MyBottomNavigation
 import com.noteapp.navigation.Routes
 import com.noteapp.ui.NoteViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class MainActivity : ComponentActivity() {
+
+    private val noteViewModel: NoteViewModel by viewModel()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val driver = AndroidSqliteDriver(NoteDatabase.Schema, applicationContext, "note.db")
-        val database = NoteDatabase(driver)
-        val queries = database.noteEntityQueries
-        val viewModel = NoteViewModel(queries)
-
         setContent {
             val navController = rememberNavController()
 
@@ -47,7 +46,7 @@ class MainActivity : ComponentActivity() {
                     // Panggil AppNavGraph SEKALI SAJA dan oper viewModel-nya
                     AppNavGraph(
                         navController = navController,
-                        viewModel = viewModel
+                        viewModel = noteViewModel
                     )
                 }
             }
