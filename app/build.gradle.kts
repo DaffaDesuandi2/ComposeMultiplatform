@@ -59,6 +59,7 @@ dependencies {
     implementation("io.insert-koin:koin-androidx-compose:4.2.1")
     implementation("androidx.navigation:navigation-compose:2.9.8")
     testImplementation(libs.junit)
+    implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
     implementation("app.cash.sqldelight:android-driver:2.0.1")
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
