@@ -18,7 +18,7 @@ val appModule = module {
     viewModel { NoteViewModel(get()) }
     single {
         GenerativeModel(
-            modelName = "gemini-1.5-flash",
+            modelName = "gemini-2.5-flash",
             apiKey = "AIzaSyAtv4Jsi8Rak4ZnrIX4i7a_AtNSkqqmhP8"
         )
     }
